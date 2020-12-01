@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "id": "concepts",
+      "elements": [
+        {
+          "id": "dimension",
+          "label": "Dimension",
+          "type": "DIMENSION",
+          "options": {
+            "min": 1,
+            "max": 1
+          }
+        },
+        {
+          "id": "metric",
+          "label": "Metric",
+          "type": "METRIC",
+          "options": {
+            "min": 1,
+            "max": 6
+          }
+        }
+      ]
+    }
+  ],
+  "style": [
+    {
+      "id": "chartLabels",
+      "label": "Chart Labels",
+      "elements": [
+		{
+		  "type": "FONT_SIZE",
+		  "id": "xLabelFontSize",
+		  "label": "X-Label Font Size",
+		  "defaultValue": 14
+		},
+		{
+			"type": "FONT_SIZE",
+			"id": "yLabelFontSize",
+			"label": "Y-Label Font Size",
+			"defaultValue": 14
+		  }
+      ]
+    },
+	{
+	  "id": "series",
+	  "label": "Series Colors",
+	  "elements": [
+	    {
+		  "type": "BORDER_COLOR",
+		  "id": "originalSeriesColor",
+		  "label": "Original Border Color",
+		  "defaultValue": "#0000FF"
+      },
+      {
+        "type": "FILL_COLOR",
+        "id": "originalFillColor",
+        "label": "Original Fill color",
+        "defaultValue": "#0000FF"
+      },
+      {
+        "type": "BORDER_COLOR",
+        "id": "comparisonSeriesColor",
+        "label": "Comparison",
+        "defaultValue": "#FF0000"
+      },
+      {
+        "type": "FILL_COLOR",
+        "id": "comparisonFillColor",
+        "label": "Comparison Fill color",
+        "defaultValue": "#FF0000"
+      }
+	  ]
+	}
+  ]
+}

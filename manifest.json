@@ -1,0 +1,20 @@
+{
+  "name": "Backbone Community Visualization",
+  "organization": "MD",
+  "organizationUrl": "https://url",
+  "termsOfServiceUrl": "https://url",
+  "supportUrl": "https://url",
+  "packageUrl": "https://url",
+  "privacyPolicyUrl": "https://url",
+  "devMode": true,
+  "components": [{
+    "id": "backboneSteppedLineChart",
+    "name": "Backbone Stepped Line Chart",
+    "description": "Stepped line chart created with Chart.js",
+    "resource": {
+      "js": "gs://gds-viz-mllrdev/dev/steppedLineChart.js",
+      "config": "gs://gds-viz-mllrdev/dev/steppedLineChart.json",
+      "css": "gs://gds-viz-mllrdev/dev/steppedLineChart.css"
+    }
+  }]
+}
