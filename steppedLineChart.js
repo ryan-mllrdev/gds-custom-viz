@@ -42,45 +42,57 @@ function hexToRgb(hex) {
 }
 
 function drawViz(data) {
-	
+
 	let rowData = data.tables.DEFAULT;
 	let chartData = [];
 	let chartLabelsX = [];
 	for(i = 1; i <= 52; i++) {
 		chartLabelsX.push(`Week ${i}`);
 	}
-	
-	rowData.forEach(function (row, i) {
-		const lineData = {
-		  week: row["dimension"][0],
-		  quotient1: row["metric"][0],
-		  stores1: row["metric"][1],
-		  kfp1: row["metric"][2],
-		  quotient2: row["metric"][3],
-		  stores2: row["metric"][4],
-		  kfp2: row["metric"][5]
-		};
-		
-		chartData.push(lineData);
-	});
+
+	// rowData.forEach(function (row, i) {
+	// 	const lineData = {
+	// 	  week: row["dimension"][0],
+	// 	  quotient1: row["metric"][0],
+	// 	  stores1: row["metric"][1],
+	// 	  kfp1: row["metric"][2],
+	// 	  quotient2: row["metric"][3],
+	// 	  stores2: row["metric"][4],
+	// 	  kfp2: row["metric"][5]
+	// 	};
+
+	// 	chartData.push(lineData);
+	// });
+
+  chartData = rowData.map(function(row) {
+    return {
+      week: row["dimension"][0],
+      quotient1: row["metric"][0],
+      stores1: row["metric"][1],
+      kfp1: row["metric"][2],
+      quotient2: row["metric"][3],
+      stores2: row["metric"][4],
+      kfp2: row["metric"][5]
+    };
+  });
 
 	const line1Data = chartData.map(function(e) {
 	   return e.quotient1;
 	});
-	
+
 	const line2Data = chartData.map(function(e) {
 	   return e.quotient2;
-	});	
+	});
 
 	const height = dscc.getHeight();
 	const width = dscc.getWidth();
 
 	const originalSeriesColor =  data.style.originalSeriesColor.value ? data.style.originalSeriesColor.value.color : data.style.originalSeriesColor.defaultValue;
 	const comparisonSeriesColor =  data.style.comparisonSeriesColor.value ? data.style.comparisonSeriesColor.value.color : data.style.comparisonSeriesColor.defaultValue;
-	
+
 	const originalFillColor =  data.style.originalFillColor.value ? data.style.originalFillColor.value.color : data.style.originalFillColor.defaultValue;
 	const comparisonFillColor =  data.style.comparisonFillColor.value ? data.style.comparisonFillColor.value.color : data.style.comparisonFillColor.defaultValue;
-	
+
 	const xLabelFontSize = data.style.xLabelFontSize.value ? data.style.xLabelFontSize.value : data.style.xLabelFontSize.defaultValue;
 	const yLabelFontSize = data.style.yLabelFontSize.value ? data.style.yLabelFontSize.value : data.style.yLabelFontSize.defaultValue;
 
@@ -97,7 +109,7 @@ function drawViz(data) {
 	canvas.height = height;
 	canvas.width = width;
 	var svg = canvas.getContext("2d");
-	  
+
 	var options = {
 		tooltips : {
 			titleAlign: 'center',
@@ -111,7 +123,7 @@ function drawViz(data) {
 			yPadding: 20,
 			callbacks : {
 				afterLabel : function(tooltipItem, data) {
-					
+
 					const dataIndex = tooltipItem.index;
 					const currentSeries = tooltipItem.datasetIndex;
 
@@ -150,8 +162,8 @@ function drawViz(data) {
 						min: 1,
 						max: 52
 					}
-				}]         
-			}  
+				}]
+			}
 	};
 	var chart = new Chart(svg, {
 		type: 'line',
