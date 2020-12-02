@@ -43,7 +43,7 @@ function hexToRgb(hex) {
 }
 
 function drawViz(data) {
-	
+
 	Chart.defaults.LineWithLine = Chart.defaults.line;
 	Chart.controllers.LineWithLine = Chart.controllers.line.extend({
 		draw: function(ease) {
@@ -165,7 +165,7 @@ function drawViz(data) {
 					if (stores == 0) {
 						return `KFP: ${kfp}\nAverage: ${quotient}`;
 					} else { 
-						return `KFP: ${kfp}\nSelling: ${stores}\nQuotient: ${quotient}`;
+						return `KFP: ${kfp}\nSelling: ${kfp > 0 ? stores : 0}\nQuotient: ${quotient}`;
 					}
 
 				},
