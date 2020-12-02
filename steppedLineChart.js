@@ -43,6 +43,30 @@ function hexToRgb(hex) {
 }
 
 function drawViz(data) {
+	
+	Chart.defaults.LineWithLine = Chart.defaults.line;
+	Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+		draw: function(ease) {
+			Chart.controllers.line.prototype.draw.call(this, ease);
+			if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+				var activePoint = this.chart.tooltip._active[0],
+					ctx = this.chart.ctx,
+					x = activePoint.tooltipPosition().x,
+					topY = this.chart.legend.bottom,
+					bottomY = this.chart.chartArea.bottom;
+
+				// draw line
+				ctx.save();
+				ctx.beginPath();
+				ctx.moveTo(x, topY);
+				ctx.lineTo(x, bottomY);
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = '#FFB6C1';
+				ctx.stroke();
+				ctx.restore();
+			}
+		}
+	});
 
 	let rowData = data.tables.DEFAULT;
 	let chartData = [];
@@ -60,16 +84,16 @@ function drawViz(data) {
 		};
 	});
 
-	chartLabelsX = chartData.map(function(e) {
-		return `Week ${e.week}`;
-	});
+	for (i = 1; i <= 52; i++) {
+		chartLabelsX.push(`Week ${i}`);
+	}
 
 	const line1Data = chartData.map(function(e) {
-	   return { x: e.week, y: e.quotient1 };
+	   return { x: `Week ${+e.week}`, y: e.quotient1 };
 	});
 
 	const line2Data = chartData.map(function(e) {
-	   return { x: e.week, y: e.quotient2 };
+	   return { x: `Week ${+e.week}`, y: e.quotient2 };
 	});
 
 	const height = dscc.getHeight();
@@ -103,6 +127,7 @@ function drawViz(data) {
 
 	var options = {
 		tooltips : {
+			intersect: false,
 			titleAlign: 'center',
 			bodySpacing: 8,
 			titleFontSize: 16,
@@ -113,6 +138,11 @@ function drawViz(data) {
 			xPadding: 20,
 			yPadding: 20,
 			callbacks : {
+				title: function(tooltipItem, data) {
+					const dataIndex = tooltipItem[0].index;
+					const currentWeek = chartData[dataIndex].week;
+					return `Week ${currentWeek}`;
+				},
 				afterLabel : function(tooltipItem, data) {
 
 					const dataIndex = tooltipItem.index;
@@ -131,12 +161,7 @@ function drawViz(data) {
 						stores = chartData[dataIndex].stores2;
 						quotient = tooltipItem.value;
 					}
-
-
-					console.log(chartData[dataIndex]);
-					console.log(dataIndex);
-					console.log(chartData);
-
+					
 					if (stores == 0) {
 						return `KFP: ${kfp}\nAverage: ${quotient}`;
 					} else { 
@@ -144,15 +169,15 @@ function drawViz(data) {
 					}
 
 				},
-				label: function(context) {
-					return '\n';
+				label: function(tooltipItem, data) {
+					return `\n`;
 				}
 			}
 		},
 		scales: {
 				yAxes: [{
 					ticks: {
-						beginAtZero:true,
+						beginAtZero: true,
 						fontSize: yLabelFontSize
 					}
 				}],
@@ -166,7 +191,7 @@ function drawViz(data) {
 			}
 	};
 	var chart = new Chart(svg, {
-		type: 'line',
+		type: 'LineWithLine',
 		data: {
 			labels: chartLabelsX,
 			datasets: [
@@ -188,7 +213,7 @@ function drawViz(data) {
 					backgroundColor: `rgb(${comparisonFillColorRGB.r},${comparisonFillColorRGB.g},${comparisonFillColorRGB.b}, ${lineBackgroundOpacity})`,
 					pointBackgroundColor: 'rgb(255,255,255)',
 					borderWidth: lineBorderWidth,
-					spanGaps: false
+					spanGaps: true
 				}
 			]
 		},
